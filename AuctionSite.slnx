@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="BlogBackend/AuctionSite.csproj" />
+  <Project Path="Models/Models.csproj" Id="1bc607bc-629b-4f1d-b55f-991abbbbbcd0" />
+  <Project Path="Repository/Repository.csproj" Id="b2f8ad4c-0d74-41b5-bc54-e959bab16e67" />
+  <Project Path="Services/Services.csproj" />
+</Solution>
