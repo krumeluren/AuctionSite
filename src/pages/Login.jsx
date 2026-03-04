@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../utils/api';
 
+import './Login.css';
+import '../App.css';
+
 const Login = () => {
     const [isLoginMode, setIsLoginMode] = useState(true);
     const [username, setUsername] = useState('');

@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { apiFetch } from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 
+import './Home.css';
+import '../App.css';
+
 const Home = () => {
     const [auctions, setAuctions] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
@@ -39,16 +42,16 @@ const Home = () => {
     return (
         <div style={{ maxWidth: '800px', margin: '0 auto', fontFamily: 'sans-serif' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                <h1>Aktiva Auktioner</h1>
+                <h1 className="page-title">Aktiva Auktioner</h1>
                 {user ? (
-                    <div>
+                    <div >
                         <span style={{ marginRight: '15px' }}>Inloggad som: {user.username}</span>
-                        <Link to="/auctions/create" style={{ padding: '8px 12px', background: 'black', color: 'white', textDecoration: 'none' }}>
+                        <Link to="/auctions/create"  class="create-auction">
                             Skapa Auktion
                         </Link>
                     </div>
                 ) : (
-                    <Link to="/login" style={{ padding: '8px 12px', background: 'gray', color: 'white', textDecoration: 'none' }}>
+                    <Link to="/login" style={{ padding: '8px 12px', background: 'gray', color: 'white' }}>
                         Logga in
                     </Link>
                 )}

@@ -1,4 +1,4 @@
-const BASE_URL = ' http://localhost:5262/api'; // modify to match backend URL and port
+const BASE_URL = ' http://localhost:5262/api'; // backend url/port
 
 export const apiFetch = async (endpoint, options = {}) => {
     const token = localStorage.getItem('jwt_token');

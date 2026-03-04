@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { apiFetch } from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 
+import './CreateAuction.css';
+import '../App.css';
+
 const CreateAuction = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
@@ -58,75 +61,65 @@ const CreateAuction = () => {
     };
 
     return (
-        <div style={{ maxWidth: '600px', margin: '0 auto', fontFamily: 'sans-serif' }}>
-            <h2>Skapa ny auktion</h2>
+        <div className="create-auction-wrapper">
+            <h2 className="create-auction-title">Skapa ny auktion</h2>
             
-            {error && (
-                <div style={{ color: 'red', marginBottom: '15px', padding: '10px', border: '1px solid red', backgroundColor: '#ffe6e6' }}>
-                    {error}
-                </div>
-            )}
+            {error && <div className="error-message">{error}</div>}
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                <div>
-                    <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Titel</label>
+            <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label className="form-label">Titel</label>
                     <input
                         type="text"
+                        className="form-control"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         required
-                        style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
                     />
                 </div>
 
-                <div>
-                    <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Beskrivning</label>
+                <div className="form-group">
+                    <label className="form-label">Beskrivning</label>
                     <textarea
+                        className="form-control"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         required
-                        rows="4"
-                        style={{ width: '100%', padding: '8px', boxSizing: 'border-box', resize: 'vertical' }}
+                        rows="5"
                     />
                 </div>
 
-                <div>
-                    <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Startpris (SEK)</label>
+                <div className="form-group">
+                    <label className="form-label">Startpris (SEK)</label>
                     <input
                         type="number"
+                        className="form-control"
                         min="0"
                         step="1"
                         value={startingPrice}
                         onChange={(e) => setStartingPrice(e.target.value)}
                         required
-                        style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
                     />
                 </div>
 
-                <div>
-                    <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Slutdatum och tid</label>
+                <div className="form-group">
+                    <label className="form-label">Slutdatum och tid</label>
                     <input
                         type="datetime-local"
+                        className="form-control"
                         value={endDate}
                         onChange={(e) => setEndDate(e.target.value)}
                         required
-                        style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
                     />
                 </div>
 
                 <button 
                     type="submit" 
+                    className="btn btn-primary" 
                     disabled={loading}
-                    style={{ 
-                        padding: '10px 20px', 
-                        backgroundColor: loading ? '#ccc' : '#000', 
-                        color: '#fff', 
-                        border: 'none', 
-                        cursor: loading ? 'not-allowed' : 'pointer',
-                        marginTop: '10px'
-                    }}
+                    style={{ width: '100%', marginTop: '10px' }}
                 >
-                    {loading ? 'Väntar på svar från server...' : 'Skapa auktion'}
+                    {loading ? 'Skapar auktion...' : 'Skapa auktion'}
                 </button>
             </form>
         </div>

@@ -1,0 +1,158 @@
+.auction-detail-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    text-decoration: none;
+    color: #0066cc;
+    font-weight: 500;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.auction-card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.auction-card.active {
+    background-color: white;
+}
+
+.auction-card.inactive {
+    background-color: #ffe6e6;
+    border-color: #ffcccc;
+}
+
+.admin-warning {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.auction-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.auction-header h1 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.auction-description {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.auction-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #eee;
+}
+
+.current-price-highlight {
+    color: #0066cc;
+}
+
+.status-open {
+    color: green;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.status-closed {
+    color: red;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.bid-section {
+    border: 1px solid #b3d4fc;
+    background-color: #e6f2ff;
+    padding: 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.bid-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.bid-form {
+    display: flex;
+    gap: 10px;
+}
+
+.bid-input {
+    flex: 1;
+}
+
+.closed-section {
+    padding: 20px;
+    background-color: #e8f5e9;
+    border: 1px solid #c8e6c9;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.closed-section h3 {
+    margin: 0 0 10px 0;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.bid-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    margin-top: 10px;
+}
+
+.bid-history-table th {
+    background-color: #eee;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.bid-history-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.bid-amount {
+    font-weight: bold;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.info-text {
+    display: block;
+    color: #555;
+    margin-top: 5px;
+    font-size: 0.85rem;
+}

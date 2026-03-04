@@ -1,0 +1,37 @@
+.profile-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.profile-header {
+    margin-bottom: 20px;
+}
+
+.profile-divider {
+    margin: 20px 0;
+    border: none;
+    border-top: 1px solid #eee;
+}
+
+.status-message {
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.status-error {
+    background-color: #ffe6e6;
+    color: #d32f2f;
+    border: 1px solid #ffcccc;
+}
+
+.status-success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+}

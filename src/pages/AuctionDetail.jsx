@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { apiFetch } from '../utils/api';
 import { useAuth } from '../context/AuthContext';
+import './AuctionDetail.css';
+import '../App.css';
 const formatLocalTime = (dateString) => {
     if (!dateString) return '';
     const isUtc = dateString.endsWith('Z') ? dateString : `${dateString}Z`;
@@ -106,57 +108,75 @@ const AuctionDetail = () => {
     const hasBids = auction.bids && auction.bids.length > 0;
 
     return (
-        <div style={{ maxWidth: '800px', margin: '0 auto', fontFamily: 'sans-serif' }}>
-            <Link to="/" style={{ display: 'inline-block', marginBottom: '20px', textDecoration: 'none', color: '#0066cc' }}>
+        <div className="auction-detail-wrapper">
+            <Link to="/" className="back-link">
                 &larr; Tillbaka till listan
             </Link>
 
-            <div style={{ border: '1px solid #ddd', padding: '20px', borderRadius: '4px', marginBottom: '20px', background: auction.isActive ? 'white' : '#ffe6e6' }}>
-                {!auction.isActive && <div style={{ color: 'red', fontWeight: 'bold', marginBottom: '10px' }}>[INAKTIVERAD AV ADMINISTRATÖR]</div>}
+            <div className={`auction-card ${auction.isActive ? 'active' : 'inactive'}`}>
+                {!auction.isActive && <div className="admin-warning">[INAKTIVERAD AV ADMINISTRATÖR]</div>}
                 
                 {isEditing ? (
                     <form onSubmit={handleUpdateAuction}>
-                        {updateError && <div style={{ color: 'red', marginBottom: '10px' }}>{updateError}</div>}
+                        {updateError && <div className="error-message">{updateError}</div>}
                         
-                        <div style={{ marginBottom: '15px' }}>
-                            <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '5px' }}>Titel</label>
-                            <input value={updateTitle} onChange={(e) => setUpdateTitle(e.target.value)} required style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}/>
+                        <div className="form-group">
+                            <label className="form-label">Titel</label>
+                            <input 
+                                className="form-control"
+                                value={updateTitle} 
+                                onChange={(e) => setUpdateTitle(e.target.value)} 
+                                required 
+                            />
                         </div>
                         
-                        <div style={{ marginBottom: '15px' }}>
-                            <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '5px' }}>Beskrivning</label>
-                            <textarea value={updateDescription} onChange={(e) => setUpdateDescription(e.target.value)} required rows="4" style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}/>
+                        <div className="form-group">
+                            <label className="form-label">Beskrivning</label>
+                            <textarea 
+                                className="form-control"
+                                value={updateDescription} 
+                                onChange={(e) => setUpdateDescription(e.target.value)} 
+                                required 
+                                rows="4" 
+                            />
                         </div>
 
-                        <div style={{ marginBottom: '15px' }}>
-                            <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '5px' }}>Startpris</label>
-                            <input type="number" value={updateStartingPrice} onChange={(e) => setUpdateStartingPrice(e.target.value)} disabled={hasBids} style={{ width: '100%', padding: '8px', boxSizing: 'border-box', backgroundColor: hasBids ? '#eee' : 'white' }}/>
-                            {hasBids && <small style={{ display: 'block', color: '#555', marginTop: '5px' }}>Startpris kan ej ändras (bud existerar).</small>}
+                        <div className="form-group">
+                            <label className="form-label">Startpris</label>
+                            <input 
+                                type="number" 
+                                className="form-control"
+                                value={updateStartingPrice} 
+                                onChange={(e) => setUpdateStartingPrice(e.target.value)} 
+                                disabled={hasBids} 
+                            />
+                            {hasBids && <small className="info-text">Startpris kan ej ändras (bud existerar).</small>}
                         </div>
 
-                        <button type="submit" style={{ padding: '10px 15px', backgroundColor: '#3498db', color: 'white', border: 'none', cursor: 'pointer', borderRadius: '4px' }}>Spara ändringar</button>
-                        <button type="button" onClick={() => setIsEditing(false)} style={{ padding: '10px 15px', backgroundColor: '#95a5a6', color: 'white', border: 'none', cursor: 'pointer', borderRadius: '4px', marginLeft: '10px' }}>Avbryt</button>
+                        <div className="form-actions">
+                            <button type="submit" className="btn btn-primary">Spara ändringar</button>
+                            <button type="button" onClick={() => setIsEditing(false)} className="btn" style={{ backgroundColor: '#95a5a6', color: 'white' }}>Avbryt</button>
+                        </div>
                     </form>
                 ) : (
                     <>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                            <h1 style={{ marginTop: 0 }}>{auction.title}</h1>
-                            {
-                            isCreator && auction.isOpen && (
-                                <button onClick={() => setIsEditing(true)} style={{ padding: '8px 15px', backgroundColor: '#f39c12', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Redigera</button>
+                        <div className="auction-header">
+                            <h1>{auction.title}</h1>
+                            {isCreator && auction.isOpen && (
+                                <button onClick={() => setIsEditing(true)} className="btn" style={{ backgroundColor: '#f39c12', color: 'white' }}>Redigera</button>
                             )}
                         </div>
-                        <p style={{ fontSize: '1.1em' }}>{auction.description}</p>
+                        <p className="auction-description">{auction.description}</p>
                         
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '20px', background: '#f9f9f9', padding: '15px' }}>
+                        <div className="auction-info-grid">
                             <div><strong>Startpris:</strong> {auction.startingPrice} kr</div>
-                            <div style={{ color: '#0066cc' }}><strong>Aktuellt pris:</strong> {auction.currentPrice} kr</div>
+                            <div className="current-price-highlight"><strong>Aktuellt pris:</strong> {auction.currentPrice} kr</div>
                             <div><strong>Startdatum:</strong> {formatLocalTime(auction.startDate)}</div>
                             <div><strong>Slutdatum:</strong> {formatLocalTime(auction.endDate)}</div>
                             <div><strong>Säljare:</strong> {auction.creatorUsername}</div>
                             <div>
                                 <strong>Status:</strong> 
-                                <span style={{ color: auction.isOpen ? 'green' : 'red', fontWeight: 'bold', marginLeft: '5px' }}>
+                                <span className={auction.isOpen ? 'status-open' : 'status-closed'}>
                                     {auction.isOpen ? 'Öppen' : 'Avslutad'}
                                 </span>
                             </div>
@@ -166,45 +186,45 @@ const AuctionDetail = () => {
             </div>
 
             {auction.isOpen && user && !isCreator && auction.isActive && (
-                <div style={{ border: '1px solid #b3d4fc', background: '#e6f2ff', padding: '20px', borderRadius: '4px', marginBottom: '20px' }}>
-                    <h3 style={{ marginTop: 0 }}>Lägg ett bud</h3>
-                    {bidError && <div style={{ color: 'red', marginBottom: '10px' }}>{bidError}</div>}
+                <div className="bid-section">
+                    <h3>Lägg ett bud</h3>
+                    {bidError && <div className="error-message">{bidError}</div>}
                     
-                    <form onSubmit={handleBidSubmit} style={{ display: 'flex', gap: '10px' }}>
+                    <form onSubmit={handleBidSubmit} className="bid-form">
                         <input
                             type="number"
+                            className="form-control bid-input"
                             min={auction.currentPrice + 1}
                             step="1"
                             value={bidAmount}
                             onChange={(e) => setBidAmount(e.target.value)}
                             required
-                            style={{ padding: '8px', flex: 1 }}
                         />
-                        <button type="submit" style={{ padding: '8px 15px', backgroundColor: '#3498db', color: 'white', border: 'none', cursor: 'pointer', borderRadius: '4px' }}>Bekräfta bud</button>
+                        <button type="submit" className="btn btn-primary">Bekräfta bud</button>
                     </form>
                 </div>
             )}
 
             {!auction.isOpen ? (
-                 <div style={{ padding: '20px', background: '#e8f5e9', border: '1px solid #c8e6c9', borderRadius: '4px' }}>
-                    <h3 style={{ margin: '0 0 10px 0' }}>Auktionen är avslutad</h3>
+                 <div className="closed-section">
+                    <h3>Auktionen är avslutad</h3>
                     {auction.winningBid ? (
                         <p>Vinnande bud: <strong>{auction.winningBid.amount} kr</strong> av <em>{auction.winningBid.username}</em></p>
                     ) : (
-                        <p>Inga bud lades innan auktionen stängdes</p>
+                        <p>Inga bud lades innan auktionen stängts</p>
                     )}
                  </div>
             ) : (
                 <>
                     <h3>Budhistorik</h3>
                     {hasBids ? (
-                        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                        <table className="bid-history-table">
                             <thead>
-                                <tr style={{ background: '#eee' }}>
-                                    <th style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>Datum</th>
-                                    <th style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>Användare</th>
-                                    <th style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>Summa</th>
-                                    <th style={{ padding: '10px', borderBottom: '1px solid #ddd' }}></th>
+                                <tr>
+                                    <th>Datum</th>
+                                    <th>Användare</th>
+                                    <th>Summa</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -214,12 +234,12 @@ const AuctionDetail = () => {
                                     
                                     return (
                                         <tr key={bid.id}>
-                                            <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{formatLocalTime(bid.date)}</td>
-                                            <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{bid.username}</td>
-                                            <td style={{ padding: '10px', borderBottom: '1px solid #ddd', fontWeight: 'bold' }}>{bid.amount} kr</td>
-                                            <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
+                                            <td>{formatLocalTime(bid.date)}</td>
+                                            <td>{bid.username}</td>
+                                            <td className="bid-amount">{bid.amount} kr</td>
+                                            <td>
                                                 {isHighest && isMyBid && (
-                                                    <button onClick={() => handleRetractBid(bid.id)} style={{ padding: '4px 8px', backgroundColor: '#e74c3c', color: 'white', border: 'none', cursor: 'pointer', borderRadius: '3px', fontSize: '0.8em' }}>Ångra</button>
+                                                    <button onClick={() => handleRetractBid(bid.id)} className="btn btn-danger" style={{ padding: '4px 8px', fontSize: '0.8em' }}>Ångra</button>
                                                 )}
                                             </td>
                                         </tr>

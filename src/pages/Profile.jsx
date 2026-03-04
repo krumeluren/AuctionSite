@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { apiFetch } from '../utils/api';
-
+import './Profile.css';
+import '../App.css';
 const Profile = () => {
     const { user } = useAuth();
     
@@ -52,29 +53,25 @@ const Profile = () => {
     };
 
     return (
-        <div style={{ maxWidth: '600px', margin: '0 auto', fontFamily: 'sans-serif', padding: '20px', background: 'white', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
-            <h2>Hantera konto</h2>
-            <p>Inloggad som: <strong>{user.username}</strong></p>
-            <hr style={{ margin: '20px 0', border: 'none', borderTop: '1px solid #ddd' }} />
+        <div className="profile-wrapper">
+            <div className="profile-header">
+                <h2>Hantera konto</h2>
+                <p>Inloggad som: <strong>{user.username}</strong></p>
+            </div>
+            
+            <hr className="profile-divider" />
             
             <h3>Byt lösenord</h3>
             
             {status.message && (
-                <div style={{ 
-                    padding: '10px', 
-                    marginBottom: '15px', 
-                    borderRadius: '4px',
-                    backgroundColor: status.type === 'error' ? '#ffe6e6' : '#e6ffe6',
-                    color: status.type === 'error' ? 'red' : 'green',
-                    border: `1px solid ${status.type === 'error' ? 'red' : 'green'}`
-                }}>
+                <div className={`status-message ${status.type === 'error' ? 'status-error' : 'status-success'}`}>
                     {status.message}
                 </div>
             )}
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Nuvarande lösenord</label>
+                    <label className="form-label">Nuvarande lösenord</label>
                     <input
                         type="password"
                         value={oldPassword}
@@ -85,7 +82,7 @@ const Profile = () => {
                 </div>
 
                 <div className="form-group">
-                    <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Nytt lösenord</label>
+                    <label className="form-label">Nytt lösenord</label>
                     <input
                         type="password"
                         value={newPassword}
@@ -96,7 +93,7 @@ const Profile = () => {
                 </div>
 
                 <div className="form-group">
-                    <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Bekräfta nytt lösenord</label>
+                    <label className="form-label">Bekräfta nytt lösenord</label>
                     <input
                         type="password"
                         value={confirmNewPassword}
@@ -108,9 +105,9 @@ const Profile = () => {
 
                 <button 
                     type="submit" 
-                    className="btn"
+                    className="btn btn-primary"
                     disabled={loading}
-                    style={{ marginTop: '10px' }}
+                    style={{ marginTop: '10px', width: '100%' }}
                 >
                     {loading ? 'Uppdaterar...' : 'Uppdatera lösenord'}
                 </button>

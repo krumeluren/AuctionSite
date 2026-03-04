@@ -3,6 +3,9 @@ import { apiFetch } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+import './Admin.css';
+import '../../App.css';
+
 const AdminAuctions = () => {
     const [auctions, setAuctions] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -43,42 +46,47 @@ const AdminAuctions = () => {
     if (loading) return <div>Laddar auktionsdata...</div>;
     if (error) return <div style={{ color: 'red' }}>{error}</div>;
 
-    return (
-        <div>
-            <h2>Administration: Auktioner</h2>
-            <p>Här kan du dölja/visa auktioner från det publika</p>
-            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
-                <thead>
-                    <tr style={{ background: '#2c3e50', color: 'white' }}>
-                        <th style={{ padding: '10px' }}>ID</th>
-                        <th style={{ padding: '10px' }}>Titel</th>
-                        <th style={{ padding: '10px' }}>Skapad av</th>
-                        <th style={{ padding: '10px' }}>Status</th>
-                        <th style={{ padding: '10px' }}>Åtgärd</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {auctions.map(auction => (
-                        <tr key={auction.id} style={{ borderBottom: '1px solid #ddd' }}>
-                            <td style={{ padding: '10px' }}>{auction.id}</td>
-                            <td style={{ padding: '10px' }}>{auction.title}</td>
-                            <td style={{ padding: '10px' }}>{auction.creatorUsername}</td>
-                            <td style={{ padding: '10px', color: auction.isActive ? 'green' : 'red', fontWeight: 'bold' }}>
-                                {auction.isActive ? 'Aktiv' : 'Inaktiverad'}
-                            </td>
-                            <td style={{ padding: '10px' }}>
-                                <button 
-                                    onClick={() => handleToggleStatus(auction.id)} 
-                                    className={`btn ${auction.isActive ? 'btn-danger' : ''}`}
-                                    style={{ padding: '5px 10px', fontSize: '0.9em', backgroundColor: auction.isActive ? '' : '#27ae60' }}
-                                >
-                                    {auction.isActive ? 'Inaktivera' : 'Aktivera'}
-                                </button>
-                            </td>
+return (
+        <div className="admin-wrapper">
+            <div className="admin-header">
+                <h2>Administration: Auktioner</h2>
+                <p>Här kan du dölja/visa auktioner från det publika</p>
+            </div>
+            
+            <div className="table-responsive">
+                <table className="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Titel</th>
+                            <th>Skapad av</th>
+                            <th>Status</th>
+                            <th>Åtgärd</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {auctions.map(auction => (
+                            <tr key={auction.id}>
+                                <td>{auction.id}</td>
+                                <td>{auction.title}</td>
+                                <td>{auction.creatorUsername}</td>
+                                <td className={auction.isActive ? 'status-active' : 'status-inactive'}>
+                                    {auction.isActive ? 'Aktiv' : 'Inaktiverad'}
+                                </td>
+                                <td>
+                                    <button 
+                                        onClick={() => handleToggleStatus(auction.id)} 
+                                        className={`btn btn-toggle ${auction.isActive ? 'btn-danger' : 'btn-primary'}`}
+                                        style={!auction.isActive ? { backgroundColor: '#27ae60' } : {}}
+                                    >
+                                        {auction.isActive ? 'Inaktivera' : 'Aktivera'}
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

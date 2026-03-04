@@ -3,6 +3,8 @@ import { apiFetch } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+import './Admin.css';
+
 const AdminUsers = () => {
     const [usersList, setUsersList] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -44,44 +46,48 @@ const AdminUsers = () => {
     if (error) return <div style={{ color: 'red' }}>{error}</div>;
 
     return (
-        <div>
-            <h2>Administration: Användare</h2>
-            <p>Hantera aktivering och inaktivering av konton.</p>
-            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
-                <thead>
-                    <tr style={{ background: '#2c3e50', color: 'white' }}>
-                        <th style={{ padding: '10px' }}>ID</th>
-                        <th style={{ padding: '10px' }}>Användarnamn</th>
-                        <th style={{ padding: '10px' }}>Roll</th>
-                        <th style={{ padding: '10px' }}>Status</th>
-                        <th style={{ padding: '10px' }}>Åtgärd</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {usersList.map(u => (
-                        <tr key={u.id} style={{ borderBottom: '1px solid #ddd' }}>
-                            <td style={{ padding: '10px' }}>{u.id}</td>
-                            <td style={{ padding: '10px' }}>{u.username}</td>
-                            <td style={{ padding: '10px' }}>{u.isAdmin ? 'Administratör' : 'Användare'}</td>
-                            <td style={{ padding: '10px', color: u.isActive ? 'green' : 'red', fontWeight: 'bold' }}>
-                                {u.isActive ? 'Aktiv' : 'Inaktiverad'}
-                            </td>
-                            <td style={{ padding: '10px' }}>
-                                {/* prevent inactivating yourself */}
-                                {Number(user.id) !== u.id && (
-                                    <button 
-                                        onClick={() => handleToggleStatus(u.id)} 
-                                        className={`btn ${u.isActive ? 'btn-danger' : ''}`}
-                                        style={{ padding: '5px 10px', fontSize: '0.9em', backgroundColor: u.isActive ? '' : '#27ae60' }}
-                                    >
-                                        {u.isActive ? 'Inaktivera' : 'Aktivera'}
-                                    </button>
-                                )}
-                            </td>
+        <div className="admin-wrapper">
+            <div className="admin-header">
+                <h2>Administration: Användare</h2>
+                <p>Hantera aktivering och inaktivering av konton.</p>
+            </div>
+            
+            <div className="table-responsive">
+                <table className="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Användarnamn</th>
+                            <th>Roll</th>
+                            <th>Status</th>
+                            <th>Åtgärd</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {usersList.map(u => (
+                            <tr key={u.id}>
+                                <td>{u.id}</td>
+                                <td>{u.username}</td>
+                                <td>{u.isAdmin ? 'Administratör' : 'Användare'}</td>
+                                <td className={u.isActive ? 'status-active' : 'status-inactive'}>
+                                    {u.isActive ? 'Aktiv' : 'Inaktiverad'}
+                                </td>
+                                <td>
+                                    {Number(user.id) !== u.id && (
+                                        <button 
+                                            onClick={() => handleToggleStatus(u.id)} 
+                                            className={`btn btn-toggle ${u.isActive ? 'btn-danger' : 'btn-primary'}`}
+                                            style={!u.isActive ? { backgroundColor: '#27ae60' } : {}}
+                                        >
+                                            {u.isActive ? 'Inaktivera' : 'Aktivera'}
+                                        </button>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };
