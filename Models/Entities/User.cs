@@ -5,6 +5,8 @@ public class User {
     public string Username { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string PasswordHash { get; set; } = string.Empty;
+    public bool IsAdmin { get; set; } = false;
+    public bool IsActive { get; set; } = true;
     public ICollection<Auction> Auctions { get; set; } = new List<Auction>();
     public ICollection<Bid> Bids { get; set; } = new List<Bid>();
 }
@@ -16,6 +18,7 @@ public class Auction {
     public decimal StartingPrice { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
+    public bool IsActive { get; set; } = true;
     public int CreatorId { get; set; }
     public User Creator { get; set; } = null!;
     public ICollection<Bid> Bids { get; set; } = new List<Bid>();

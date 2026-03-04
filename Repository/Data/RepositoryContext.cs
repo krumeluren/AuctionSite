@@ -34,5 +34,14 @@ public class RepositoryContext : DbContext {
             .WithMany(u => u.Bids)
             .HasForeignKey(b => b.UserId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<User>().HasData(new User {
+            Id = 1,
+            Username = "admin",
+            Email = "admin@system.local",
+            PasswordHash = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=", // hashed "admin"
+            IsAdmin = true,
+            IsActive = true
+        });
     }
 }

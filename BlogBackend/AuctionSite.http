@@ -1,0 +1,6 @@
+@AuctionSite = http://localhost:5262
+
+GET {{AuctionSite}}/swagger/
+Accept: application/json
+
+###

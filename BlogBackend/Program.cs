@@ -3,7 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Repository.Data;
-using Services;
+using Repository.Implementations;
+using Repository.Interfaces;
+using Services.Implementations;
+using Services.Interfaces;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -62,15 +65,28 @@ builder.Services.AddDbContext<RepositoryContext>(options => options.UseSqlServer
             errorNumbersToAdd: null);
     }));
 
+// cors for allowed origins
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+builder.Services.AddCors(options => {
+    options.AddPolicy("DynamicCorsPolicy", policyBuilder => {
+        policyBuilder.WithOrigins(allowedOrigins)
+                     .AllowAnyHeader()
+                     .AllowAnyMethod();
+    });
+});
 
 // DI
-builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<AuctionService>();
-builder.Services.AddScoped<BidService>();
+builder.Services.AddScoped<IUserRepo, UserRepo>();
+builder.Services.AddScoped<IBidRepo, BidRepo>();
+builder.Services.AddScoped<IAuctionRepo, AuctionRepo>();
 
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuctionService, AuctionService>();
+builder.Services.AddScoped<IBidService, BidService>();
+builder.Services.AddScoped<IAdminAuctionService, AdminAuctionService>();
+builder.Services.AddScoped<IAdminUserService, AdminUserService>();
 
 var app = builder.Build();
-
 
 // Configure the HTTP request pipeline.
 if(app.Environment.IsDevelopment()) {
@@ -78,7 +94,8 @@ if(app.Environment.IsDevelopment()) {
     app.UseSwaggerUI();
 }
 
-app.UseCors();
+app.UseCors("DynamicCorsPolicy");
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
