@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { apiFetch } from '../../utils/api';
+import { AuctionAPI } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,7 +24,7 @@ const AdminUsers = () => {
         setLoading(true);
         try {
             // get all users
-            const data = await apiFetch('/Users'); 
+            const data = await AuctionAPI.getUsers();
             setUsersList(data || []);
         } catch (err) {
             setError(err.message);
@@ -35,7 +35,7 @@ const AdminUsers = () => {
 
     const handleToggleStatus = async (id) => {
         try {
-            await apiFetch(`/Users/admin/toggle/${id}`, { method: 'PUT' });
+            await AuctionAPI.toggleUserStatus(id); // Toggle user status
             await fetchUsers();
         } catch (err) {
             alert(`Kunde inte ändra status: ${err.message}`);

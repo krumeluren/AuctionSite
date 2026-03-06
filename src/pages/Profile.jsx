@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { apiFetch } from '../utils/api';
+import { AuctionAPI } from '../utils/api';
 import './Profile.css';
 import '../App.css';
 const Profile = () => {
@@ -33,12 +33,9 @@ const Profile = () => {
 
         setLoading(true);
         try {
-            await apiFetch('/Users/password', {
-                method: 'PUT',
-                body: JSON.stringify({
-                    oldPassword: oldPassword,
-                    newPassword: newPassword
-                })
+            await AuctionAPI.changePassword({
+                oldPassword: oldPassword,
+                newPassword: newPassword
             });
             
             setStatus({ type: 'success', message: 'Lösenordet har uppdaterats!' });

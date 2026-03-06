@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { apiFetch } from '../utils/api';
+import { AuctionAPI } from '../utils/api';
 
 import './Login.css';
 import '../App.css';
@@ -26,11 +26,13 @@ const Login = () => {
             : { username, email, password };
 
         try {
-            const data = await apiFetch(endpoint, {
-                method: 'POST',
-                body: JSON.stringify(payload)
-            });
-
+            const data = null;
+            if (isLoginMode) {
+                data = await AuctionAPI.login(username, password);
+            }
+            else {
+                data = await AuctionAPI.register(username, email, password);
+            }
             login({
                 id: data.id,
                 token: data.token,

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { apiFetch } from '../utils/api';
+import { AuctionAPI } from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 
 import './CreateAuction.css';
@@ -41,16 +41,12 @@ const CreateAuction = () => {
 
         setLoading(true);
         try {
-            const data = await apiFetch('/Auctions', {
-                method: 'POST',
-                body: JSON.stringify({
-                    title,
-                    description,
-                    startingPrice: numericPrice,
-                    endDate: selectedDate.toISOString()
-                })
+            const data = await AuctionAPI.createAuction({
+                title,
+                description,
+                startingPrice: numericPrice,
+                endDate: selectedDate.toISOString()
             });
-
             // navigate to the new detail after successful creation
             navigate(`/auctions/${data.id}`);
         } catch (err) {

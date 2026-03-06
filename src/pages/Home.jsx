@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { apiFetch } from '../utils/api';
+import { AuctionAPI } from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 
 import './Home.css';
@@ -17,11 +17,7 @@ const Home = () => {
         setLoading(true);
         setError(null);
         try {
-            const endpoint = query 
-                ? `/Auctions?search=${encodeURIComponent(query)}` 
-                : '/Auctions';
-            
-            const data = await apiFetch(endpoint);
+            const data = await AuctionAPI.getAuctions(query);
             setAuctions(data || []);
         } catch (err) {
             setError(err.message);
@@ -46,7 +42,7 @@ const Home = () => {
                 {user ? (
                     <div >
                         <span style={{ marginRight: '15px' }}>Inloggad som: {user.username}</span>
-                        <Link to="/auctions/create"  class="create-auction">
+                        <Link to="/auctions/create"  className="create-auction">
                             Skapa Auktion
                         </Link>
                     </div>

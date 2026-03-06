@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { apiFetch } from '../utils/api';
+import { AuctionAPI } from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import './AuctionDetail.css';
 import '../App.css';
@@ -30,7 +30,7 @@ const AuctionDetail = () => {
         setLoading(true);
         setError(null);
         try {
-            const data = await apiFetch(`/Auctions/${id}`);
+            const data = await AuctionAPI.getAuctionById(id);
             setAuction(data);
             setUpdateTitle(data.title);
             setUpdateDescription(data.description);
@@ -57,10 +57,7 @@ const AuctionDetail = () => {
         }
 
         try {
-            await apiFetch('/Bids', {
-                method: 'POST',
-                body: JSON.stringify({ auctionId: Number(id), amount: numericAmount })
-            });
+            await AuctionAPI.placeBid(id, numericAmount);
             setBidAmount('');
             await fetchAuction();
         } catch (err) {
@@ -70,7 +67,7 @@ const AuctionDetail = () => {
 
     const handleRetractBid = async (bidId) => {
         try {
-            await apiFetch(`/Bids/${bidId}`, { method: 'DELETE' });
+            await AuctionAPI.retractBid(bidId);
             await fetchAuction();
         } catch (err) {
             alert(err.message);
@@ -81,13 +78,10 @@ const AuctionDetail = () => {
         e.preventDefault();
         setUpdateError(null);
         try {
-            await apiFetch(`/Auctions/${id}`, {
-                method: 'PUT',
-                body: JSON.stringify({
-                    title: updateTitle,
-                    description: updateDescription,
-                    startingPrice: parseFloat(updateStartingPrice)
-                })
+            await AuctionAPI.updateAuction(id, {
+                title: updateTitle,
+                description: updateDescription,
+                startingPrice: parseFloat(updateStartingPrice)
             });
             setIsEditing(false);
             await fetchAuction();
